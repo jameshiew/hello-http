@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 axum = "0.6.7"
+eyre = "0.6.8"
 tokio = { version = "1.25.0", features = ["full"] }
 tracing = "0.1.37"
 tracing-subscriber = "0.3.16"

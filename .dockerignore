@@ -1,0 +1,6 @@
+*
+!Cargo.lock
+!Cargo.toml
+!docker-entrypoint.sh
+!recipe.json
+!src/

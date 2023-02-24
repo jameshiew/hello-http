@@ -1,12 +1,29 @@
-use axum::{response::Html, routing::get, Router};
+use axum::{
+    http::{Request, Response},
+    response::Html,
+    routing::get,
+    Router,
+};
 use eyre::Result;
-use std::env;
+use std::{env, time::Duration};
+use tower_http::trace::TraceLayer;
+use tracing::Span;
 
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
-    let app = Router::new().route("/", get(index));
+    let app = Router::new().route("/", get(index)).layer(
+        TraceLayer::new_for_http()
+            .on_request(|request: &Request<_>, _span: &Span| {
+                let uri = request.uri();
+                tracing::info!(%uri, "Received request");
+            })
+            .on_response(|response: &Response<_>, latency: Duration, _span: &Span| {
+                let status = response.status();
+                tracing::info!(?latency, ?status, "Sent response");
+            }),
+    );
 
     let host = env::var("HTTP_HOST").unwrap_or("127.0.0.1".into());
     let port = env::var("HTTP_PORT").unwrap_or("3000".into());

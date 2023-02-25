@@ -1,0 +1,53 @@
+openapi: 3.1.0
+info:
+  title: hello-http
+  version: 0.0.0
+servers:
+  - url: http://localhost:3000
+    description: Running locally
+paths:
+  /:
+    get:
+      summary: Index page
+    post:
+      summary: Update state
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/App"
+      responses:
+        "200":
+          description: State updated
+  /readyz:
+    get:
+      summary: Get readiness
+      responses:
+        "200":
+          description: Ready
+        "503":
+          description: Not ready
+  /livez:
+    get:
+      summary: Get liveness
+      responses:
+        "200":
+          description: Live
+        "500":
+          description: Not live
+
+components:
+  schemas:
+    App:
+      type: object
+      properties:
+        ready:
+          type: bool
+          required: true
+        live:
+          type: bool
+          required: true
+      example:
+        ready: false
+        live: true

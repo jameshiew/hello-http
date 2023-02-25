@@ -56,15 +56,20 @@ async fn main() -> Result<()> {
     init_logger();
 
     let shared_state = Arc::new(RwLock::new(App::default()));
+    const READYZ_ROUTE: &str = "/readyz";
+    const LIVEZ_ROUTE: &str = "/livez";
 
     let router = Router::new()
         .route("/", get(index).post(update))
-        .route("/readyz", get(readyz))
-        .route("/livez", get(livez))
+        .route(READYZ_ROUTE, get(readyz))
+        .route(LIVEZ_ROUTE, get(livez))
         .layer(
             TraceLayer::new_for_http()
                 .on_request(|request: &Request<_>, _span: &Span| {
                     let uri = request.uri();
+                    if uri.path() == READYZ_ROUTE || uri.path() == LIVEZ_ROUTE {
+                        return;
+                    }
                     let method = request.method();
                     tracing::info!(%uri, %method, "Received request");
                 })

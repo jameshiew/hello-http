@@ -75,7 +75,7 @@ async fn main() -> Result<()> {
                 })
                 .on_response(|response: &Response<_>, latency: Duration, _span: &Span| {
                     let status = response.status();
-                    tracing::info!(?latency, ?status, "Sent response");
+                    tracing::debug!(?latency, ?status, "Sent response");
                 }),
         )
         .with_state(shared_state);

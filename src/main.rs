@@ -14,6 +14,7 @@ use std::{
 };
 use tower_http::trace::TraceLayer;
 use tracing::Span;
+use tracing_subscriber::fmt;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct App {
@@ -32,7 +33,12 @@ impl Default for App {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    tracing_subscriber::fmt::init();
+    let format = fmt::format()
+        .with_thread_ids(true)
+        .with_thread_names(true)
+        .compact();
+    tracing_subscriber::fmt().event_format(format).init();
+
     let shared_state = Arc::new(RwLock::new(App::default()));
 
     let router = Router::new()

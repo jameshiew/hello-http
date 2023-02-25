@@ -43,7 +43,8 @@ async fn main() -> Result<()> {
             TraceLayer::new_for_http()
                 .on_request(|request: &Request<_>, _span: &Span| {
                     let uri = request.uri();
-                    tracing::info!(%uri, "Received request");
+                    let method = request.method();
+                    tracing::info!(%uri, %method, "Received request");
                 })
                 .on_response(|response: &Response<_>, latency: Duration, _span: &Span| {
                     let status = response.status();

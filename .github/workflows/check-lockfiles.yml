@@ -26,8 +26,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: "publish-recipe-json"
-      - run: make install-cargo-chef
-      - run: make prepare-recipe
+      - run: cargo install --locked cargo-chef@0.1.51
+      - run: cargo chef prepare
       - uses: actions/upload-artifact@v3
         with:
           name: recipe.json
@@ -49,5 +49,5 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: "cargo-unused-dependencies"
-      - run: make install-cargo-udeps
-      - run: make check-deps
+      - run: cargo install --locked cargo-udeps@0.1.35
+      - run: cargo +${{ steps.toolchain.outputs.content }} udeps --all-targets

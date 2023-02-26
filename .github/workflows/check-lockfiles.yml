@@ -2,19 +2,21 @@ name: check-lockfiles
 
 on:
   push:
+    branches:
+      - main
     paths:
+      - Cargo.toml
       - Cargo.lock
-      - recipe.json
   pull_request:
-    branches: [main]
+    branches:
+      - main
     paths:
+      - Cargo.toml
       - Cargo.lock
-      - recipe.json
 
 jobs:
-  check-recipe-json:
-    runs-on: ubuntu-latest
-
+  publish-recipe-json:
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
@@ -23,18 +25,29 @@ jobs:
           profile: minimal
       - uses: Swatinem/rust-cache@v2
         with:
-          key: "cargo-chef"
-      - run: cargo install --version 0.1.51 cargo-chef
-      - name: Make the latest `recipe.json` with `cargo chef`
-        run: cargo chef prepare --recipe-path recipe.json
-      - id: recipe-unchanged
-        run: |
-          if git diff --quiet HEAD recipe.json; then
-            echo "::set-output name=recipe_different::false"
-          else
-            echo "::set-output name=recipe_different::true"
-          fi
-      - if: steps.recipe-unchanged.outputs.recipe_different == 'true'
-        run: |
-          echo "Error: 'recipe.json' does not match 'Cargo.lock'"
-          exit 1
+          key: "publish-recipe-json"
+      - run: make install-cargo-chef
+      - run: make prepare-recipe
+      - uses: actions/upload-artifact@v3
+        with:
+          name: recipe.json
+          path: recipe.json
+
+  cargo-unused-dependencies:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read package.json
+        id: toolchain
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./rust-nightly-toolchain.txt
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ steps.toolchain.outputs.content }}
+          profile: minimal
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: "cargo-unused-dependencies"
+      - run: make install-cargo-udeps
+      - run: make check-deps

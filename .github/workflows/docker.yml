@@ -18,4 +18,7 @@ jobs:
       - uses: docker/build-push-action@v4
         with:
           context: .
+          push: true
           tags: jameshiew/hello-http:latest
+          cache-from: type=registry,ref=user/app:buildcache
+          cache-to: type=registry,ref=user/app:buildcache,mode=max

@@ -1,12 +1,10 @@
 name: docker
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
 
 env:
-  IMAGE: jameshiew/hello-http:${{ github.run_id }}-${{ github.run_attempt }}
+  IMAGE: jameshiew/rustbuilder:${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   build:

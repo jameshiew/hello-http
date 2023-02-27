@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  IMAGE_TAG: ${{ github.run_id }}-${{ github.run_attempt }}
+
 jobs:
   build-amd64:
     runs-on: ubuntu-22.04
@@ -15,8 +18,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build --platform linux/amd64 -t jameshiew/hello-http:latest-amd64 .
-      - run: docker push jameshiew/hello-http:latest-amd64
+      - run: docker build --platform linux/amd64 -t jameshiew/hello-http:$IMAGE_TAG-amd64 .
+      - run: docker push jameshiew/hello-http:$IMAGE_TAG-amd64
 
   build-arm64:
     runs-on: ubuntu-22.04
@@ -27,8 +30,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build --platform linux/arm64 -t jameshiew/hello-http:latest-arm64 .
-      - run: docker push jameshiew/hello-http:latest-arm64
+      - run: docker build --platform linux/arm64 -t jameshiew/hello-http:$IMAGE_TAG-arm64 .
+      - run: docker push jameshiew/hello-http:$IMAGE_TAG-arm64
 
   push-multiarch-manifest:
     runs-on: ubuntu-22.04
@@ -40,5 +43,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker manifest create jameshiew/hello-http:latest --amend jameshiew/hello-http:latest-amd64 --amend jameshiew/hello-http:latest-arm64
-      - run: docker manifest push --purge jameshiew/hello-http:latest
+      - run: docker manifest create jameshiew/hello-http:$IMAGE_TAG --amend jameshiew/hello-http:$IMAGE_TAG-amd64 --amend jameshiew/hello-http:$IMAGE_TAG-arm64
+      - run: docker manifest push --purge jameshiew/hello-http:$IMAGE_TAG

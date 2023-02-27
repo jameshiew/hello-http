@@ -54,6 +54,12 @@ fn init_logger() {
 #[tokio::main]
 async fn main() -> Result<()> {
     init_logger();
+    // output runtime os and architecture
+    let os = std::env::consts::OS;
+    let arch = std::env::consts::ARCH;
+    let cwd = std::env::current_dir()?;
+    let cwd = cwd.to_string_lossy();
+    tracing::info!(%os, %arch, %cwd, "Starting up");
 
     let shared_state = Arc::new(RwLock::new(App::default()));
     const READYZ_ROUTE: &str = "/readyz";

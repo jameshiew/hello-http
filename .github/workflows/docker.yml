@@ -9,8 +9,13 @@ env:
   IMAGE: jameshiew/hello-http:${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
-  build-amd64:
+  build:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - arm64
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-qemu-action@v2
@@ -18,26 +23,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build --platform linux/amd64 -t $IMAGE-amd64 .
-      - run: docker push $IMAGE-amd64
-
-  build-arm64:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - uses: docker/setup-qemu-action@v2
-      - uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - run: docker build --platform linux/arm64 -t $IMAGE-arm64 .
-      - run: docker push $IMAGE-arm64
+      - run: docker build --platform linux/${{ matrix.arch }} -t $IMAGE-${{ matrix.arch }} .
+      - run: docker push $IMAGE-${{ matrix.arch }}
 
   push-multiarch-manifest:
     runs-on: ubuntu-22.04
-    needs:
-      - build-amd64
-      - build-arm64
+    needs: build
     steps:
       - uses: docker/login-action@v2
         with:

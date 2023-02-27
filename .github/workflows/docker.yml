@@ -15,10 +15,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: jameshiew/hello-http:latest
-          cache-from: type=registry,ref=user/app:buildcache
-          cache-to: type=registry,ref=user/app:buildcache,mode=max
+      - run: docker build --platform linux/amd64 -t jameshiew/hello-http:latest-amd64 .
+      - run: docker push jameshiew/hello-http:latest-amd64 .

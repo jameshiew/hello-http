@@ -41,7 +41,7 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 COPY healthcheck.sh /usr/local/bin/healthcheck.sh
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=3 \
-    CMD "healthcheck.sh"
+  CMD "healthcheck.sh"
 
 ARG HTTP_PORT=3000
 ENV HTTP_PORT=$HTTP_PORT

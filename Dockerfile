@@ -1,27 +1,4 @@
-FROM ubuntu:jammy-20230126 AS build
-
-RUN apt-get update && apt-get install -y \
-  clang \
-  curl \
-  git \
-  llvm \
-  mold
-
-# install rustup (no default toolchain)
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain none
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-WORKDIR /build
-
-COPY rust-toolchain.toml .
-RUN rustup show
-
-RUN mkdir .cargo/
-COPY cargo/config.toml .cargo/config.toml
-
-RUN cargo search
-RUN cargo install --locked cargo-chef@0.1.51
+FROM jameshiew/rustbuilder:1.67.1 AS builder
 
 COPY recipe.json .
 
@@ -49,6 +26,6 @@ ENV HTTP_PORT=$HTTP_PORT
 ARG HTTP_HOST="0.0.0.0"
 ENV HTTP_HOST=$HTTP_HOST
 
-COPY --from=build /build/target/release/hello-http /usr/local/bin/hello-http
+COPY --from=builder /usr/local/build/target/release/hello-http /usr/local/bin/hello-http
 
 ENTRYPOINT ["docker-entrypoint.sh"]

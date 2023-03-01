@@ -1,4 +1,4 @@
-# hello-http
+# hello-http [![Docker Hub pulls](https://img.shields.io/docker/pulls/jameshiew/hello-http?style=flat-square)](https://hub.docker.com/r/jameshiew/hello-http/tags)
 
 This is a simple HTTP server packaged inside a Docker image, for testing/demonstration purposes. See [the OpenAPI spec](openapi.yml) for details of endpoints.
 

@@ -1,8 +1,8 @@
 *
-!Cargo.lock
-!Cargo.toml
-!docker-entrypoint.sh
-!healthcheck.sh
-!recipe.json
+!/Cargo.lock
+!/Cargo.toml
+!/docker-entrypoint.sh
+!/healthcheck.sh
+!/recipe.json
 !/rust-toolchain.toml
-!src/
+!/src/

@@ -1,4 +1,4 @@
-FROM jameshiew/rustbuilder:1.67.1 AS builder
+FROM jameshiew/rustbuilder:1.68.0 AS builder
 
 COPY recipe.json .
 

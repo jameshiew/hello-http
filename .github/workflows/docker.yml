@@ -43,14 +43,16 @@ jobs:
           echo "IMAGE_TAG=${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
 
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.runs_on }}
     needs:
       - set-image-tag
     strategy:
       matrix:
-        arch:
-          - amd64
-          - arm64
+        include:
+          - arch: amd64
+            runs_on: ubuntu-22.04
+          - arch: arm64
+            runs_on: buildjet-2vcpu-ubuntu-2204-arm
     steps:
       - run: |
           echo "IMAGE=${{secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ needs.set-image-tag.outputs.IMAGE_TAG }}" >> $GITHUB_ENV

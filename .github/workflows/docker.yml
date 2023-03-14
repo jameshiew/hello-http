@@ -29,7 +29,7 @@ jobs:
     outputs:
       IMAGE_TAG: ${{ steps.set_outputs.outputs.IMAGE_TAG }}
     steps:
-      - if: github.event_name == 'push' && github.ref == 'refs/head/main'
+      - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         name: Build latest tag
         run: |
           echo "IMAGE_TAG=latest" >> $GITHUB_ENV

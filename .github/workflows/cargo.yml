@@ -1,0 +1,57 @@
+name: cargo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/cargo.yml
+      - Cargo.toml
+      - Cargo.lock
+      - recipe.json
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/cargo.yml
+      - Cargo.toml
+      - Cargo.lock
+      - recipe.json
+
+jobs:
+  check-recipe-json:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Rust toolchain
+        run: rustup show
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo install --locked cargo-chef@0.1.51
+      - run: cargo chef prepare
+      - id: recipe-unchanged
+        run: |
+          if git diff --quiet HEAD recipe.json; then
+            echo "::set-output name=recipe_different::false"
+          else
+            echo "::set-output name=recipe_different::true"
+          fi
+      - if: steps.recipe-unchanged.outputs.recipe_different == 'true'
+        run: |
+          echo "Error: 'recipe.json' does not match 'Cargo.lock'"
+          exit 1
+
+  check-unused-dependencies:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read nightly toolchain
+        id: toolchain
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./rust-nightly-toolchain.txt
+      - name: Install Rust nightly toolchain
+        run: rustup toolchain install ${{ steps.toolchain.outputs.content }}
+      - run: echo "RUSTUP_TOOLCHAIN=${{ steps.toolchain.outputs.content }}" >> $GITHUB_ENV
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo install --locked cargo-udeps@0.1.35
+      - run: cargo +${{ steps.toolchain.outputs.content }} udeps --all-targets

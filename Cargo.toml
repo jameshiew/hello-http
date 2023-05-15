@@ -7,7 +7,7 @@ edition = "2021"
 axum = "0.6.11"
 eyre = "0.6.8"
 serde = { version = "1.0.152", features = ["derive"] }
-tokio = { version = "1.25.0", features = [
+tokio = { version = "1.28.1", features = [
     "macros",
     "rt",
     "rt-multi-thread",

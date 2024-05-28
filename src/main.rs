@@ -93,7 +93,10 @@ async fn main() -> Result<()> {
     let listener = TcpListener::bind(&addr).await?;
     tracing::info!("listening on {}", &addr);
 
-    axum::serve(listener, router).with_graceful_shutdown(shutdown_handler()).await.unwrap();
+    axum::serve(listener, router)
+        .with_graceful_shutdown(shutdown_handler())
+        .await
+        .unwrap();
 
     Ok(())
 }

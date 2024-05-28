@@ -148,5 +148,5 @@ async fn shutdown_handler() {
         _ = quits.recv() => {
             tracing::info!("received SIGQUIT, shutting down");
         }
-    };
+    }
 }

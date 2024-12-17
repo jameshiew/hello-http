@@ -23,7 +23,7 @@ env:
 
 jobs:
   set-image-tag:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     outputs:
       IMAGE_TAG: ${{ steps.set_outputs.outputs.IMAGE_TAG }}
     steps:
@@ -48,7 +48,7 @@ jobs:
       matrix:
         include:
           - arch: amd64
-            runs_on: ubuntu-22.04
+            runs_on: ubuntu-latest
           - arch: arm64
             runs_on: buildjet-2vcpu-ubuntu-2204-arm
     steps:
@@ -68,7 +68,7 @@ jobs:
       - run: docker push $IMAGE-${{ matrix.arch }}
 
   push-multiarch-manifest:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs:
       - set-image-tag
       - build

@@ -1,8 +1,6 @@
-FROM jameshiew/rustbuilder:1.68.0 AS builder
+FROM rust:1.83.0 AS builder
 
-COPY recipe.json .
-
-RUN cargo chef cook --release
+WORKDIR /opt
 
 COPY Cargo.toml .
 COPY Cargo.lock .
@@ -10,7 +8,7 @@ COPY src/ src/
 
 RUN cargo build --release
 
-FROM debian:bookworm-20230208-slim
+FROM debian:bookworm-20241202-slim
 
 RUN apt-get update && apt-get install -y curl
 
@@ -26,6 +24,6 @@ ENV HTTP_PORT=$HTTP_PORT
 ARG HTTP_HOST="0.0.0.0"
 ENV HTTP_HOST=$HTTP_HOST
 
-COPY --from=builder /usr/local/build/target/release/hello-http /usr/local/bin/hello-http
+COPY --from=builder /opt/target/release/hello-http /usr/local/bin/hello-http
 
 ENTRYPOINT ["docker-entrypoint.sh"]

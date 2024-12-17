@@ -8,7 +8,6 @@ on:
       - .github/workflows/cargo.yml
       - Cargo.toml
       - Cargo.lock
-      - recipe.json
   pull_request:
     branches:
       - main
@@ -16,30 +15,8 @@ on:
       - .github/workflows/cargo.yml
       - Cargo.toml
       - Cargo.lock
-      - recipe.json
 
 jobs:
-  check-recipe-json:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
-      - run: cargo install --locked cargo-chef@0.1.51
-      - run: cargo chef prepare
-      - id: recipe-unchanged
-        run: |
-          if git diff --quiet HEAD recipe.json; then
-            echo "::set-output name=recipe_different::false"
-          else
-            echo "::set-output name=recipe_different::true"
-          fi
-      - if: steps.recipe-unchanged.outputs.recipe_different == 'true'
-        run: |
-          echo "Error: 'recipe.json' does not match 'Cargo.lock'"
-          exit 1
-
   check-unused-dependencies:
     runs-on: ubuntu-22.04
     steps:

@@ -15,7 +15,6 @@ on:
       - Cargo.*
       - docker-entrypoint.sh
       - healthcheck.sh
-      - rust-toolchain.toml
       - "**/*.rs"
 
 env:

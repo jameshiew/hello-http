@@ -3,5 +3,4 @@
 !/Cargo.toml
 !/docker-entrypoint.sh
 !/healthcheck.sh
-!/rust-toolchain.toml
 !/src/

@@ -12,6 +12,7 @@ use std::{
     sync::{Arc, RwLock},
     time::Duration,
 };
+use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
 use tracing::{metadata::LevelFilter, Span};
 use tracing_subscriber::{fmt, EnvFilter};
@@ -88,11 +89,12 @@ async fn main() -> Result<()> {
 
     let host = env::var("HTTP_HOST").unwrap_or("127.0.0.1".into());
     let port = env::var("HTTP_PORT").unwrap_or("3000".into());
-    let addr = format!("{host}:{port}").parse()?;
+    let addr: String = format!("{host}:{port}");
 
+    let listener = TcpListener::bind(&addr).await?;
     tracing::info!("listening on {}", addr);
-    axum::Server::bind(&addr)
-        .serve(router.into_make_service())
+
+    axum::serve(listener, router.into_make_service())
         .with_graceful_shutdown(shutdown_handler())
         .await
         .unwrap();

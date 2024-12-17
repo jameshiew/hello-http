@@ -4,15 +4,15 @@ version = "0.0.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.6.11"
-eyre = "0.6.8"
-serde = { version = "1.0.152", features = ["derive"] }
-tokio = { version = "1.25.0", features = [
+axum = "0.7.9"
+eyre = "0.6.12"
+serde = { version = "1.0.216", features = ["derive"] }
+tokio = { version = "1.42.0", features = [
     "macros",
     "rt",
     "rt-multi-thread",
     "signal",
 ] }
-tower-http = { version = "0.4.0", features = ["trace"] }
-tracing = "0.1.37"
-tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
+tower-http = { version = "0.6.2", features = ["trace"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }

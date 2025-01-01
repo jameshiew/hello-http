@@ -1,3 +1,4 @@
+use anyhow::Result;
 use axum::{
     extract::State,
     http::{Request, Response, StatusCode},
@@ -5,7 +6,6 @@ use axum::{
     routing::get,
     Json, Router,
 };
-use eyre::Result;
 use serde::{Deserialize, Serialize};
 use std::{
     env,

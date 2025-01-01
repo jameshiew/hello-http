@@ -1,20 +1,18 @@
-use axum::{
-    extract::State,
-    http::{Request, Response, StatusCode},
-    response::Html,
-    routing::get,
-    Json, Router,
-};
-use eyre::Result;
+use std::env;
+use std::sync::{Arc, RwLock};
+use std::time::Duration;
+
+use anyhow::Result;
+use axum::extract::State;
+use axum::http::{Request, Response, StatusCode};
+use axum::response::Html;
+use axum::routing::get;
+use axum::{Json, Router};
 use serde::{Deserialize, Serialize};
-use std::{
-    env,
-    sync::{Arc, RwLock},
-    time::Duration,
-};
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
-use tracing::{metadata::LevelFilter, Span};
+use tracing::metadata::LevelFilter;
+use tracing::Span;
 use tracing_subscriber::{fmt, EnvFilter};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

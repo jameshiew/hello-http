@@ -4,8 +4,8 @@ version = "0.0.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7.9"
-eyre = "0.6.12"
+axum = "0.8.1"
+anyhow = "1.0.95"
 serde = { version = "1.0.217", features = ["derive"] }
 tokio = { version = "1.42.0", features = [
     "macros",

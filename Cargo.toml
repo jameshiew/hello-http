@@ -1,8 +1,8 @@
 [package]
 name = "hello-http"
 version = "0.0.0"
-edition = "2021"
-rust-version = "1.78.0"
+edition = "2024"
+rust-version = "1.85.0"
 
 [dependencies]
 axum = "0.8.1"

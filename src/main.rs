@@ -11,9 +11,9 @@ use axum::{Json, Router};
 use serde::{Deserialize, Serialize};
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
-use tracing::metadata::LevelFilter;
 use tracing::Span;
-use tracing_subscriber::{fmt, EnvFilter};
+use tracing::metadata::LevelFilter;
+use tracing_subscriber::{EnvFilter, fmt};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct App {

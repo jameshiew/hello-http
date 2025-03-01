@@ -2,22 +2,9 @@ name: rust
 
 on:
   push:
-    branches:
-      - main
-      - develop
-    paths:
-      - ".github/workflows/rust.yml"
-      - "**/*.rs"
-      - Cargo.*
-      - healthcheck.sh
   pull_request:
     branches:
       - main
-    paths:
-      - ".github/workflows/rust.yml"
-      - "**/*.rs"
-      - Cargo.*
-      - healthcheck.sh
 
 jobs:
   check:

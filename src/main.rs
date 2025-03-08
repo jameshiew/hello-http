@@ -130,6 +130,7 @@ async fn readyz(State(state): State<Arc<RwLock<App>>>) -> StatusCode {
     }
 }
 
+#[cfg(unix)]
 async fn shutdown_handler() {
     let mut interrupts = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::interrupt())
         .expect("failed to register SIGINT handler");
@@ -148,4 +149,13 @@ async fn shutdown_handler() {
             tracing::info!("received SIGQUIT, shutting down");
         }
     };
+}
+
+#[cfg(windows)]
+async fn shutdown_handler() {
+    if tokio::signal::ctrl_c().await.is_ok() {
+        tracing::info!("received Ctrl+C, shutting down");
+    } else {
+        tracing::error!("failed to listen for Ctrl+C");
+    }
 }

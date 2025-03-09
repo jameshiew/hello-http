@@ -60,8 +60,7 @@ async fn main() -> Result<()> {
 
     axum::serve(listener, router.into_make_service())
         .with_graceful_shutdown(shutdown_handler())
-        .await
-        .unwrap();
+        .await?;
 
     Ok(())
 }

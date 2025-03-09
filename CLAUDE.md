@@ -9,6 +9,8 @@
 - Test: `cargo test`
 - Test specific: `cargo test <test_name>`
 
+Format code as a final step after finishing editing code.
+
 ## Code Style Guidelines
 
 ### Imports

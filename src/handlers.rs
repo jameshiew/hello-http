@@ -1,9 +1,9 @@
 use std::sync::{Arc, RwLock};
 
+use axum::Json;
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::response::Html;
-use axum::Json;
 
 use crate::models::App;
 

@@ -8,9 +8,9 @@ use std::sync::{Arc, RwLock};
 use std::time::Duration;
 
 use anyhow::Result;
+use axum::Router;
 use axum::http::{Request, Response};
 use axum::routing::get;
-use axum::Router;
 use tokio::net::TcpListener;
 use tower_http::trace::TraceLayer;
 use tracing::Span;

@@ -5,10 +5,10 @@ edition = "2024"
 rust-version = "1.85.0"
 
 [dependencies]
-axum = "0.8.1"
-anyhow = "1.0.96"
-serde = { version = "1.0.218", features = ["derive"] }
-tokio = { version = "1.43.0", features = [
+axum = "0.8.3"
+anyhow = "1.0.97"
+serde = { version = "1.0.219", features = ["derive"] }
+tokio = { version = "1.44.1", features = [
     "macros",
     "rt",
     "rt-multi-thread",

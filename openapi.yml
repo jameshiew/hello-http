@@ -43,11 +43,12 @@ components:
       type: object
       properties:
         ready:
-          type: bool
-          required: true
+          type: boolean
         live:
-          type: bool
-          required: true
+          type: boolean
+      required:
+        - ready
+        - live
       example:
         ready: false
         live: true

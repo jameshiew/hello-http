@@ -7,8 +7,10 @@ use axum::response::Html;
 
 use crate::models::App;
 
+pub const INDEX_HTML: &str = "<p>Hello, World!</p>";
+
 pub async fn index() -> Html<&'static str> {
-    Html("<p>Hello, World!</p>")
+    Html(INDEX_HTML)
 }
 
 pub async fn update(app: State<Arc<RwLock<App>>>, Json(new): Json<App>) -> StatusCode {

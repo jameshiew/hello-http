@@ -13,21 +13,13 @@ Format code as a final step after finishing editing code.
 
 ## Code Style Guidelines
 
-### Imports
-
-- Group imports using `StdExternalCrate` with `Module` granularity (see rustfmt.toml)
-- Order: std → external crates → project modules
-
 ### Error Handling
 
 - Use `anyhow::Result` for functions that can fail
 - Prefer `?` operator for error propagation
 
-### Naming & Structure
+### Documentation
 
-- Use snake_case for variables and functions
-- Use PascalCase for types/structs
-- Use descriptive variable names
 - Add basic documentation for public functions
 
 ### Environment
